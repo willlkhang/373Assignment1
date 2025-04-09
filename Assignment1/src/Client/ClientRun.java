@@ -7,15 +7,17 @@ import Supplement.Supplement;
 
 import java.util.ArrayList;
 
+import Exception.*;
+
 import static sun.text.normalizer.UTF16.append;
 
 public class ClientRun {
-    public static void run(String[] Args){
+    public static void run(String[] Args) throws InvalidInputDataException {
         ClientServiceConstructor client = new ClientServiceConstructor();
 
-        ArrayList<PaymentMethod> paymentList = client.constructPaymentList();
+        ArrayList<PaymentMethod> paymentList = client.constructPaymentListPro();
         ArrayList<Customer> customerList = client.constructCustomerList(paymentList);
-        ArrayList<Supplement> supplementList = client.constructSupplementList();
+        ArrayList<Supplement> supplementList = client.constructSupplementListPro();
 
         client.addSupplementsToCustomer(supplementList, customerList);
 
@@ -43,11 +45,11 @@ public class ClientRun {
         client.printMonhtlyEmail(mo);
     }
 
-    public static void addingAndRemovingCustomerTest(MagazineOperator mo, ArrayList<Supplement> supplementList, ArrayList<PaymentMethod> paymentList, ClientServiceConstructor client){
+    public static void addingAndRemovingCustomerTest(MagazineOperator mo, ArrayList<Supplement> supplementList, ArrayList<PaymentMethod> paymentList, ClientServiceConstructor client) throws InvalidInputDataException {
         System.out.println("\n\n====================================================Add=========================================================");
         PayingCustomer newCus = client.newCustomerGenerator(mo, supplementList, paymentList, "Minh Khang Nguyen", "34739531@student.murdoch.edu.au");
-        AssociateCustomer newAssCus1 = client.TestAddingAssociateCustomer(newCus, supplementList, mo, "Will Nguyen 1", "will1@ict373.com", 1);
-        AssociateCustomer newAssCus2 = client.TestAddingAssociateCustomer(newCus, supplementList, mo, "Will Nguyen 2", "will2@ict373.com", 2);
+        AssociateCustomer newAssCus1 = client.TestAddingAssociateCustomer(newCus, supplementList, mo, "Haha AAA", "haha@ict373.com", 1);
+        AssociateCustomer newAssCus2 = client.TestAddingAssociateCustomer(newCus, supplementList, mo, "Hehe EEE", "hehe@ict373.com", 2);
 
         StringBuilder message = new StringBuilder();
         message.append("Emailing to ").append(newCus.getEmail());
@@ -58,7 +60,7 @@ public class ClientRun {
         System.out.println(newCus.magazineMonthlyEmail());
 
         System.out.println("\n\n====================================================Remove=========================================================");
-        System.out.println("Removed Will Nguyen 2");
+        System.out.printf("Removing %s\n",newAssCus2.getCustomerName());
         newCus.removeAssociateCustomer(newAssCus2);
         System.out.println(newCus.magazineMonthlyEmail());
     }

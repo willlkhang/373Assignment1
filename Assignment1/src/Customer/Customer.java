@@ -4,6 +4,8 @@ import Supplement.*;
 import Magazine.*;
 import java.util.ArrayList;
 
+import Exception.*;
+
 public abstract class Customer {
     protected String customerName;
     protected String email;
@@ -15,9 +17,10 @@ public abstract class Customer {
         this.supplementList = new ArrayList<>();
     }
 
-    public Customer(String customerName, String email){
-        this.customerName = customerName;
-        this.email = email;
+
+    public Customer(String customerName, String email) throws InvalidInputDataException {
+        setCustomerName(customerName);
+        setEmail(email);
     }
 
     public Customer(String customerName, String email, ArrayList<Supplement> supplementList){
@@ -31,7 +34,10 @@ public abstract class Customer {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email) throws InvalidInputDataException {
+        if(email == null || !isValidEmail(email)){
+            throw new InvalidInputDataException("Invalid email");
+        }
         this.email = email;
     }
 
@@ -39,8 +45,11 @@ public abstract class Customer {
         return customerName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomerName(String customerName) throws InvalidInputDataException {
+        if(customerName == null || !isValidName(customerName))
+            throw new InvalidInputDataException("Invalid Customer name");
+        else
+            this.customerName = customerName;
     }
 
     public ArrayList<Supplement> getSupplementList() {
@@ -68,6 +77,15 @@ public abstract class Customer {
         return total;
     }
 
+    boolean isValidEmail(String email){
+        return email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+
+    }
+
+    boolean isValidName(String name){
+        return name.replaceAll(" ", "").matches("^[a-zA-Z]+$");
+    }
+
     //use the stringBuilder as stringBuilder doesn't create copy while implementing loop.
     //which cause unnecessary memory waste.
     public String weeklyEmailNotificationReceive(){
@@ -82,7 +100,7 @@ public abstract class Customer {
         else{
             int count = 1;
             for(Supplement sup : this.supplementList){
-                message.append(count).append(". ").append(sup.getItemName()).append(".\n");
+                message.append(count).append(". ").append(sup.getSupplementName()).append(".\n");
             }
         }
         return message.toString();

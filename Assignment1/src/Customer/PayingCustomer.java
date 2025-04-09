@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import Payment.Interface.PaymentMethod;
 import Supplement.Supplement;
 
+import Exception.*;
+
 public class PayingCustomer extends Customer{
     private PaymentMethod paymentMethod;
     private ArrayList<AssociateCustomer> associateCustomers;
@@ -24,7 +26,7 @@ public class PayingCustomer extends Customer{
     }
 
     public PayingCustomer(String customerName, String email,
-                          PaymentMethod paymentMethod){
+                          PaymentMethod paymentMethod) throws InvalidInputDataException {
         super(customerName, email);
         this.paymentMethod = paymentMethod;
         this.associateCustomers = new ArrayList<>();
@@ -68,7 +70,7 @@ public class PayingCustomer extends Customer{
         message.append("$").append(String.format("%.3f",(calWeeklyMagazineCost()))).append(" x ").append(monthWeek).append(" = ").append("$").append(String.format("%.3f",(amount))).append("\n");
         message.append("Your listing of item subscription along with cost is (weekly ---> monthly): \n");
         for(Supplement sup : supplementList){
-            message.append("+ " ).append(sup.getItemName()).append(": $").append(sup.getWeeklyCost()).append(" ---> ");
+            message.append("+ " ).append(sup.getSupplementName()).append(": $").append(sup.getWeeklyCost()).append(" ---> ");
             message.append("$").append(String.format("%.3f",(sup.getWeeklyCost()*monthWeek))).append("\n");
         }
 
@@ -79,7 +81,7 @@ public class PayingCustomer extends Customer{
             message.append(String.format("%.3f",(assCusCost))).append("\n");
             message.append("Their list of item subscription is: \n");
             for(Supplement sup : a.getSupplementList()){
-                message.append("+ " ).append(sup.getItemName()).append(": $").append(sup.getWeeklyCost()).append(" ---> ").append("$").append(sup.getWeeklyCost()*4).append("\n");
+                message.append("+ " ).append(sup.getSupplementName()).append(": $").append(sup.getWeeklyCost()).append(" ---> ").append("$").append(sup.getWeeklyCost()*4).append("\n");
             }
         }
 

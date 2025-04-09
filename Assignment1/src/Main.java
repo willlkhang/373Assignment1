@@ -12,11 +12,13 @@ import java.util.Collections;
 import java.util.Scanner;
 import java.util.Random;
 
+import Exception.*;
+
 import Client.*;
 
 public class Main{
     static Scanner sc = new Scanner(System.in);
-    public static void main(String[] Args){
+    public static void main(String[] Args) throws InvalidInputDataException {
         ClientRun Run = new ClientRun();
 
         Run.run(Args);
